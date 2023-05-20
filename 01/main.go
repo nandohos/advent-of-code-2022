@@ -3,6 +3,7 @@ package main
 import (
 	_ "embed"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -20,15 +21,17 @@ func init() {
 func main() {
 	elvesWithItems := getArrayElvesItems(input)
 
-  caloriesByElf := getTotalCaloriesByElf(elvesWithItems)
-  
-  var max int
-  for _, x := range caloriesByElf{
-    if x>max {
-     max=x 
-    }
-  }
-  fmt.Printf("part 1: %d", max)
+	caloriesByElf := getTotalCaloriesByElf(elvesWithItems)
+	sort.Ints(caloriesByElf)
+
+	fmt.Printf("part 1: %d\n", caloriesByElf[len(caloriesByElf)-1])
+
+	caloriesTop3 := 0
+	for i := 0; i < 3; i++ {
+		caloriesTop3 += caloriesByElf[len(caloriesByElf)-1-i]
+	}
+
+	fmt.Printf("part 2: %d\n", caloriesTop3)
 
 }
 
@@ -49,13 +52,13 @@ func getArrayElvesItems(input string) (arrayRes [][]int) {
 
 func getTotalCaloriesByElf(input [][]int) []int {
 
-  totals:= []int{}
-  for _, items := range input {
-    var sum int
-    for _,n := range items {
-       sum += n
-    }
-    totals = append(totals, sum)
-  }
-  return totals
+	totals := []int{}
+	for _, items := range input {
+		var sum int
+		for _, n := range items {
+			sum += n
+		}
+		totals = append(totals, sum)
+	}
+	return totals
 }
